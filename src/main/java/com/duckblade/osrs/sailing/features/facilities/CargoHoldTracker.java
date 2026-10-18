@@ -306,10 +306,18 @@ public class CargoHoldTracker
 			return;
 		}
 
-		if (sawItemContainerUpdate)
+		if (sawItemContainerUpdate && sawInventoryContainerUpdate)
 		{
 			// trust the item container event over any guesswork
 			resetInventoryDeltaState();
+			return;
+		}
+
+		if (sawItemContainerUpdate)
+		{
+			// the hold was resent before the inventory moved (e.g. a crewmate's salvage landing just after a Withdraw-All
+			// click), so it does not show this action yet; keep waiting for the inventory change
+			sawItemContainerUpdate = false;
 			return;
 		}
 
