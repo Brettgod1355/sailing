@@ -378,6 +378,10 @@ public class CargoHoldTracker
 		{
 			pendingInventoryAction = INVENTORY_DELTA_MAX_DELAY;
 			memoizedInventory = getInventoryMap();
+			// only updates that arrive after this click can be its result; a flag left over from an earlier inventory
+			// change made the next tick diff the inventory before the withdrawal reached it, so it was never counted
+			sawInventoryContainerUpdate = false;
+			sawItemContainerUpdate = false;
 			log.debug("queued pendingInventoryAction with inventory {}", memoizedInventory);
 		}
 	}
